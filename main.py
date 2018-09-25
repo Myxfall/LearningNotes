@@ -25,8 +25,10 @@ TESTTT
 """
 
 from tkinter import *
+from random import choice
 
-INTER_LINES = 12
+INTER_LINES = 10
+SIZE_NOTE = 10
 
 class Interface(Frame):
 
@@ -34,19 +36,24 @@ class Interface(Frame):
     Tous les widgets sont stockés comme attributs de cette fenêtre."""
 
     def __init__(self, fenetre, **kwargs):
+
+        self.SOL_KEY_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
         Frame.__init__(self, fenetre, width=1000, height=500, **kwargs)
         self.pack(fill=BOTH, side="bottom")
-
-        canvas = Canvas(fenetre, width=500, height=250, bg="ivory")
+        self.canvas = Canvas(fenetre, width=500, height=250, bg="ivory")
         # Music lines
-        ligne1 = canvas.create_line(100, 125 - 2 * INTER_LINES, 400, 125 - 2 * INTER_LINES)
-        ligne2 = canvas.create_line(100, 125 - INTER_LINES, 400, 125 - INTER_LINES)
-        ligne3 = canvas.create_line(100, 125, 400, 125)
-        ligne4 = canvas.create_line(100, 125 + INTER_LINES, 400, 125 + INTER_LINES)
-        ligne5 = canvas.create_line(100, 125 + 2 * INTER_LINES, 400, 125 + 2 * INTER_LINES)
+        ligne1 = self.canvas.create_line(100, 125 - 2 * INTER_LINES, 400, 125 - 2 * INTER_LINES)
+        ligne2 = self.canvas.create_line(100, 125 - INTER_LINES, 400, 125 - INTER_LINES)
+        ligne3 = self.canvas.create_line(100, 125, 400, 125)
+        ligne4 = self.canvas.create_line(100, 125 + INTER_LINES, 400, 125 + INTER_LINES)
+        ligne5 = self.canvas.create_line(100, 125 + 2 * INTER_LINES, 400, 125 + 2 * INTER_LINES)
 
-        SIZE = canvas.create_line(0, 0, 250, 125, fill="blue")
-        canvas.pack(side="top")
+        noteTest = self.canvas.create_oval(125,125, 135, 135, fill="black")
+        noteTest2 = self.canvas.create_oval(250, 130, 260, 140, fill="black")
+
+        SIZE = self.canvas.create_line(0, 0, 250, 125, fill="blue")
+        self.canvas.pack(side="top")
 
         self.bouton_quitter = Button(self, text="Quitter", command=self.quit)
         self.bouton_quitter.pack(side="right")
@@ -72,8 +79,13 @@ class Interface(Frame):
 
     def cliquer(self):
         """"""
+        print("Selecting random note")
+        noteSelection = choice(self.SOL_KEY_NOTES)
+        print(noteSelection)
 
-        print("Nothing right now")
+        self.canvas.create_oval(250, 145, 260, 155)
+        self.canvas.create_oval(250, 150, 260, 160, fill="black")
+        self.canvas.create_line(245, 155, 265, 155, width=2)
 
 
 
