@@ -21,9 +21,9 @@ Do  -   Re  -   Mi   -  Fa   -  Sol  -  La   -  Si   -  Do
 --Mi-------------------------------------
 RE
 
-TESTTT
-"""
 
+"""
+#TODO: Adding FA Key and porte below SOL and not under
 from tkinter import *
 from random import choice
 from PIL import Image, ImageTk
@@ -43,6 +43,7 @@ class Interface(Frame):
         self.SOL_KEY_NOTES = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
         self.randomNote = 0
         self.score = 0
+        self.totalNote = 0
 
         Frame.__init__(self, fenetre, width=1000, height=500, **kwargs)
         self.pack(fill=BOTH, side="bottom")
@@ -54,11 +55,11 @@ class Interface(Frame):
         ligne4 = self.canvas.create_line(100, 125 + INTER_LINES, 400, 125 + INTER_LINES)
         ligne5 = self.canvas.create_line(100, 125 + 2 * INTER_LINES, 400, 125 + 2 * INTER_LINES)
 
-        self.baseNote = self.canvas.create_oval(250, 150, 260, 160, fill="blue")
+        self.baseNote = self.canvas.create_oval(250, 150, 260, 160, fill="black")
 
         self.canvas.pack(side="top")
 
-        image = PhotoImage(file="sol.gif")
+        image = PhotoImage(file="../fig/sol.gif")
         image = image.subsample(15)
         self.canvas.create_image(110, 170, image=image, anchor=S)
         label = Label(image=image)
@@ -88,22 +89,50 @@ class Interface(Frame):
 
     def start(self):
         self.randomNote = choice(self.SOL_KEY_NOTES)
+        self.noteLine = None
+        self.noteLines = []
         print(self.randomNote)
 
         # First note in SOL KEY
         #self.canvas.create_oval(250, 150, 260, 160, fill="black")
         #self.canvas.create_line(245, 155, 265, 155, width=2)
 
-        scoreText = "Score {0}/10".format(self.score)
-        self.scoreItem = self.canvas.create_text(50, 20, text=scoreText)
+        # ***** Scoring labels *****
+        goodNoteScoreText = "Score {0}/{1}".format(self.score, self.totalNote)
+        badNoteScoreText = "Wrong note {0}/{1}".format((self.totalNote - self.score), self.totalNote)
+        self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText)
+        self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText)
+
         self.canvas.coords(self.baseNote, 250, 150 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 260, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE))
 
     def gameLoop(self):
+        self.cleanLines()
         self.randomNote = choice(self.SOL_KEY_NOTES)
 
-        scoreText = "Score {0}/10".format(self.score)
+        goodNoteScoreText = "Score {0}/{1}".format(self.score, self.totalNote)
+        badNoteScoreText = "Wrong note {0}/{1}".format((self.totalNote - self.score), self.totalNote)
         self.canvas.delete(self.scoreItem)
-        self.scoreItem = self.canvas.create_text(50, 20, text=scoreText)
+        self.canvas.delete(self.wrongNoteScoreItem)
+        self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText, fill="green")
+        self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText, fill="red")
+
+        # First Do need line on the note
+
+        if self.randomNote == 1:
+            noteLine = self.canvas.create_line(245, 155, 265, 155, width=2)
+            self.noteLines += [noteLine]
+        elif self.randomNote ==  13: # La
+            noteLine = self.canvas.create_line(245, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+            self.noteLines += [noteLine]
+        elif self.randomNote == 14: # Si
+            noteLine = self.canvas.create_line(245, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+            self.noteLines += [noteLine]
+        elif self.randomNote == 15: # Do
+            line1 = self.canvas.create_line(245, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+            line2 = self.canvas.create_line(245, 165 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 165 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+            self.noteLines += [line1]
+            self.noteLines += [line2]
+
         self.canvas.coords(self.baseNote, 250, 150 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 260, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE))
 
     def noteSelection(self, selectedNote):
@@ -114,8 +143,13 @@ class Interface(Frame):
             print("Find good note")
         else:
             print("Wrong note")
-
+        self.totalNote += 1
         self.gameLoop()
+
+    def cleanLines(self):
+        for elem in self.noteLines:
+            self.canvas.delete(elem)
+        self.noteLines = []
 
     def doSelection(self):
         """ Do Button selected """
