@@ -196,8 +196,25 @@ class Interface(Frame):
         self.noteSelection(7)
 
 
-fenetre = Tk()
-interface = Interface(fenetre)
+mainWindows = Tk()
+mainWindows.title("Learning Notes")
+mainWindows.resizable(False, False)
+w = CANVAS_WIDTH # width for the Tk root
+h = CANVAS_HEIGHT # height for the Tk root
+
+# get screen width and height
+ws = mainWindows.winfo_screenwidth() # width of the screen
+hs = mainWindows.winfo_screenheight() # height of the screen
+
+# calculate x and y coordinates for the Tk mainWindows window
+x = (ws/2) - (w/2)
+y = (hs/2) - (h/2) - 100
+
+# set the dimensions of the screen
+# and where it is placed
+mainWindows.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+interface = Interface(mainWindows)
 
 interface.mainloop()
 interface.destroy()
