@@ -25,6 +25,7 @@ RE
 """
 #TODO: Adding FA Key and porte below SOL and not under
 #TODO: Remove start button, play directly
+#TODO: clean drawing lines
 
 from tkinter import *
 from tkinter import messagebox
