@@ -24,7 +24,11 @@ RE
 
 """
 #TODO: Adding FA Key and porte below SOL and not under
+#TODO: Remove start button, play directly
+
 from tkinter import *
+from tkinter import messagebox
+
 from random import choice
 from PIL import Image, ImageTk
 
@@ -44,6 +48,7 @@ class Interface(Frame):
         self.randomNote = 0
         self.score = 0
         self.totalNote = 0
+        self.started = False
 
         Frame.__init__(self, fenetre, width=1000, height=500, **kwargs)
         self.pack(fill=BOTH, side="bottom")
@@ -90,8 +95,8 @@ class Interface(Frame):
     def start(self):
         self.randomNote = choice(self.SOL_KEY_NOTES)
         self.noteLine = None
+        self.started = True
         self.noteLines = []
-        print(self.randomNote)
 
         # First note in SOL KEY
         #self.canvas.create_oval(250, 150, 260, 160, fill="black")
@@ -137,14 +142,17 @@ class Interface(Frame):
 
     def noteSelection(self, selectedNote):
         """ Verification of random note for notes selection """
-        print(selectedNote)
-        if self.randomNote in [selectedNote, selectedNote + 7, selectedNote + 2*7]:
-            self.score += 1
-            print("Find good note")
+        if not self.started:
+            messagebox.showwarning("Warning", "Please press START")
         else:
-            print("Wrong note")
-        self.totalNote += 1
-        self.gameLoop()
+            print(selectedNote)
+            if self.randomNote in [selectedNote, selectedNote + 7, selectedNote + 2*7]:
+                self.score += 1
+                print("Find good note")
+            else:
+                print("Wrong note")
+            self.totalNote += 1
+            self.gameLoop()
 
     def cleanLines(self):
         for elem in self.noteLines:
