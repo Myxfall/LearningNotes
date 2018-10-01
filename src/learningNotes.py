@@ -23,15 +23,14 @@ RE
 
 
 """
-#TODO: Adding FA Key and porte below SOL and not under
-#TODO: Remove start button, play directly
 #TODO: clean drawing lines
+#TODO: FA Random notes
 
 from tkinter import *
 from tkinter import messagebox
 
 from random import choice
-from PIL import Image, ImageTk
+from random import randint
 
 
 INTER_LINES = 10
@@ -125,6 +124,7 @@ class Interface(Frame):
 
     def gameLoop(self):
         self.cleanLines()
+        self.randomKey = randint(0,1)
         self.randomNote = choice(self.SOL_KEY_NOTES)
 
         goodNoteScoreText = "Score {0}/{1}".format(self.score, self.totalNote)
@@ -134,23 +134,38 @@ class Interface(Frame):
         self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText, fill="green")
         self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText, fill="red")
 
-        # First Do need line on the note
-        if self.randomNote == 1: # Do
-            noteLine = self.canvas.create_line(245, 155, 265, 155, width=2)
-            self.noteLines += [noteLine]
-        elif self.randomNote ==  13: # La
-            noteLine = self.canvas.create_line(245, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
-            self.noteLines += [noteLine]
-        elif self.randomNote == 14: # Si
-            noteLine = self.canvas.create_line(245, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
-            self.noteLines += [noteLine]
-        elif self.randomNote == 15: # Do
-            line1 = self.canvas.create_line(245, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
-            line2 = self.canvas.create_line(245, 165 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 165 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
-            self.noteLines += [line1]
-            self.noteLines += [line2]
-
-        self.canvas.coords(self.baseNote, 250, 150 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 260, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE))
+        if self.randomKey == 0: # Sol Key
+            # First Do need line on the note
+            if self.randomNote == 1: # Do
+                noteLine = self.canvas.create_line(245, 155, 265, 155, width=2)
+                self.noteLines += [noteLine]
+            elif self.randomNote ==  13: # La
+                noteLine = self.canvas.create_line(245, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+                self.noteLines += [noteLine]
+            elif self.randomNote == 14: # Si
+                noteLine = self.canvas.create_line(245, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+                self.noteLines += [noteLine]
+            elif self.randomNote == 15: # Do
+                line1 = self.canvas.create_line(245, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 155 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+                line2 = self.canvas.create_line(245, 165 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 165 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+                self.noteLines += [line1]
+                self.noteLines += [line2]
+            self.canvas.coords(self.baseNote, 250, 150 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 260, 160 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE))
+        elif self.randomKey == 1: #Fa key
+            print(self.randomNote)
+            if self.randomNote == 1: # Do
+                noteLine = self.canvas.create_line(245, 290, 265, 290, width=2)
+                noteLine2 = self.canvas.create_line(245, 280, 265, 280, width=2)
+                self.noteLines += [noteLine, noteLine2]
+            elif self.randomNote == 2: # Re
+                noteLine = self.canvas.create_line(245, 280, 265, 280, width=2)
+                self.noteLines += [noteLine]
+            elif self.randomNote == 3: # Mi
+                noteLine = self.canvas.create_line(245, 280, 265, 280, width=2)
+                self.noteLines += [noteLine]
+            elif self.randomNote == 15: # Do
+                noteLine = self.canvas.create_line(245, 290 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 265, 290 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), width=2)
+            self.canvas.coords(self.baseNote, 250, 285 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE), 260, 295 - ((self.randomNote - 1) * DIFFERENTIAL_NOTE))
 
     def noteSelection(self, selectedNote):
         """ Verification of random note for notes selection """
