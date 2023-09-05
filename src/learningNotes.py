@@ -113,12 +113,15 @@ class Interface(Frame):
         self.cleanLines()
         self.noteLine = None
         self.started = True
+        self.selection = False
 
         # ***** Scoring labels *****
         goodNoteScoreText = "Score {0}/{1}".format(self.score, self.totalNote)
         badNoteScoreText = "Wrong note {0}/{1}".format((self.totalNote - self.score), self.totalNote)
+        selectionText = "No Game Yet"
         self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText)
         self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText)
+        self.selectionText = self.canvas.create_text(250, 20, text=selectionText)
 
         self.gameLoop()
 
@@ -129,10 +132,14 @@ class Interface(Frame):
 
         goodNoteScoreText = "Score {0}/{1}".format(self.score, self.totalNote)
         badNoteScoreText = "Wrong note {0}/{1}".format((self.totalNote - self.score), self.totalNote)
+        lastNoteSelectionText = "Correct" if self.selection else "Wrong"
+        lastNoteSelectionColor = "green" if self.selection else "red"
         self.canvas.delete(self.scoreItem)
         self.canvas.delete(self.wrongNoteScoreItem)
+        self.canvas.delete(self.selectionText)
         self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText, fill="green")
         self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText, fill="red")
+        self.selectionText = self.canvas.create_text(250, 20, text=lastNoteSelectionText, fill=lastNoteSelectionColor)
 
         if self.randomKey == 0: # Sol Key
             # First Do need line on the note
@@ -175,6 +182,9 @@ class Interface(Frame):
             print(selectedNote)
             if self.randomNote in [selectedNote, selectedNote + 7, selectedNote + 2*7]:
                 self.score += 1
+                self.selection = True
+            else:
+                self.selection = False
             self.totalNote += 1
             self.gameLoop()
 
