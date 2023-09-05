@@ -39,7 +39,6 @@ CANVAS_HEIGHT= 350
 CANVAS_WIDTH = 500
 
 class Interface(Frame):
-
     """Notre fenêtre principale.
     Tous les widgets sont stockés comme attributs de cette fenêtre."""
 
