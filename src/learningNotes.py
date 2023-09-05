@@ -21,7 +21,6 @@ Do  -   Re  -   Mi   -  Fa   -  Sol  -  La   -  Si   -  Do
 --Mi-------------------------------------
 RE
 
-
 """
 #TODO: clean drawing lines
 #TODO: FA Random notes
@@ -31,7 +30,6 @@ from tkinter import messagebox
 
 from random import choice
 from random import randint
-
 
 INTER_LINES = 10
 DIFFERENTIAL_NOTE = INTER_LINES / 2
