@@ -105,12 +105,12 @@ class Interface(Frame):
         self.Button_la.pack(side="left")
         self.Button_si.pack(side="left")
 
-
     def start(self):
         self.cleanLines()
         self.noteLine = None
         self.started = True
         self.selection = False
+        self.lastNote = 0
 
         # ***** Scoring labels *****
         goodNoteScoreText = "Score {0}/{1}".format(self.score, self.totalNote)
@@ -119,6 +119,7 @@ class Interface(Frame):
         self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText)
         self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText)
         self.selectionText = self.canvas.create_text(250, 20, text=selectionText)
+        self.lastNoteText = self.canvas.create_text(300, 20, text=selectionText)
 
         self.gameLoop()
 
@@ -134,9 +135,11 @@ class Interface(Frame):
         self.canvas.delete(self.scoreItem)
         self.canvas.delete(self.wrongNoteScoreItem)
         self.canvas.delete(self.selectionText)
+        self.canvas.delete(self.lastNoteText)
         self.scoreItem = self.canvas.create_text(50, 20, text=goodNoteScoreText, fill="green")
         self.wrongNoteScoreItem = self.canvas.create_text(150, 20, text=badNoteScoreText, fill="red")
         self.selectionText = self.canvas.create_text(250, 20, text=lastNoteSelectionText, fill=lastNoteSelectionColor)
+        self.lastNoteText = self.canvas.create_text(300, 20, text=self.getNoteTextFromNumber(self.lastNote), fill=lastNoteSelectionColor)
 
         if self.randomKey == 0: # Sol Key
             # First Do need line on the note
@@ -183,7 +186,28 @@ class Interface(Frame):
             else:
                 self.selection = False
             self.totalNote += 1
+            self.lastNote = self.randomNote
             self.gameLoop()
+
+    def getNoteTextFromNumber(self, noteNumber):
+        uniqueNote = (noteNumber % 7)
+
+        if (noteNumber == 7 or noteNumber == 14):
+            return "Si"
+
+        match uniqueNote:
+            case 1:
+                return "Do"
+            case 2:
+                return "Re"
+            case 3:
+                return "Mi"
+            case 4:
+                return "Fa"
+            case 5:
+                return "Sol"
+            case 6:
+                return "La"
 
     def cleanLines(self):
         for elem in self.noteLines:
@@ -217,7 +241,6 @@ class Interface(Frame):
     def siSelection(self):
         """ Si Button selected """
         self.noteSelection(7)
-
 
 mainWindows = Tk()
 mainWindows.title("Learning Notes")
